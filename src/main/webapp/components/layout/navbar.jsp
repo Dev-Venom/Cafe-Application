@@ -4,7 +4,7 @@
 
         <a href="../../index.jsp" class="logo">
 
-            Pour<span>d'Or</span>
+            Pour<span> d'Or</span>
 
         </a>
 
