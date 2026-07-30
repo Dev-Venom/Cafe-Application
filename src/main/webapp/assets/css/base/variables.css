@@ -1,0 +1,142 @@
+/* =========================================================
+   POUR D'OR DESIGN TOKENS
+   ========================================================= */
+
+:root {
+
+    /* ======================================
+       BRAND COLORS
+    ====================================== */
+
+    --color-primary: #2A1E1A;
+    --color-secondary: #5A4034;
+    --color-accent: #B88A44;
+
+    /* ======================================
+       SURFACE COLORS
+    ====================================== */
+
+    --color-background: #FCFAF7;
+    --color-surface: #FFFFFF;
+    --color-surface-alt: #F4EEE7;
+
+    /* ======================================
+       TEXT COLORS
+    ====================================== */
+
+    --text-primary: #2A1E1A;
+    --text-secondary: #46362F;
+    --text-muted: #8A7A6F;
+    --text-white: #FFFFFF;
+
+    /* ======================================
+       BORDER
+    ====================================== */
+
+    --border-color: #DDD3C8;
+
+    /* ======================================
+       STATUS
+    ====================================== */
+
+    --success: #2E7D32;
+    --warning: #ED6C02;
+    --error: #D32F2F;
+    --info: #0288D1;
+
+    /* ======================================
+       TYPOGRAPHY
+    ====================================== */
+
+    --font-heading: "Cormorant Garamond", serif;
+    --font-body: "Inter", sans-serif;
+
+    /* ======================================
+       FONT SIZES
+    ====================================== */
+
+    --display-xl: 72px;
+    --display-lg: 56px;
+
+    --heading-xl: 48px;
+    --heading-lg: 40px;
+    --heading-md: 32px;
+    --heading-sm: 24px;
+
+    --body-lg: 18px;
+    --body-md: 16px;
+    --body-sm: 14px;
+    --caption: 12px;
+
+    /* ======================================
+       FONT WEIGHTS
+    ====================================== */
+
+    --weight-regular: 400;
+    --weight-medium: 500;
+    --weight-semibold: 600;
+    --weight-bold: 700;
+
+    /* ======================================
+       LINE HEIGHT
+    ====================================== */
+
+    --line-tight: 1.2;
+    --line-normal: 1.5;
+    --line-relaxed: 1.7;
+
+    /* ======================================
+       SPACING
+    ====================================== */
+
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+    --space-6: 32px;
+    --space-7: 48px;
+    --space-8: 64px;
+    --space-9: 96px;
+    --space-10: 128px;
+
+    /* ======================================
+       BORDER RADIUS
+    ====================================== */
+
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --radius-xl: 32px;
+    --radius-pill: 999px;
+
+    /* ======================================
+       SHADOWS
+    ====================================== */
+
+    --shadow-sm:
+        0 2px 10px rgba(0,0,0,.06);
+
+    --shadow-md:
+        0 8px 24px rgba(0,0,0,.08);
+
+    --shadow-lg:
+        0 18px 50px rgba(0,0,0,.12);
+
+    /* ======================================
+       TRANSITIONS
+    ====================================== */
+
+    --transition-fast: .2s ease;
+
+    --transition-normal: .3s ease;
+
+    --transition-slow: .5s ease;
+
+    /* ======================================
+       CONTAINER
+    ====================================== */
+
+    --container-width: 1280px;
+
+}

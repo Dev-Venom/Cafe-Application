@@ -1,0 +1,39 @@
+/* =========================================================
+   GLOBAL STYLES
+   ========================================================= */
+
+body {
+    overflow-x: hidden;
+}
+
+section {
+    padding: var(--space-9) 0;
+}
+
+.container {
+    width: min(100% - 48px, var(--container-width));
+    margin-inline: auto;
+}
+
+::selection {
+    background: var(--color-accent);
+    color: var(--text-white);
+}
+
+button {
+    border: none;
+    cursor: pointer;
+    background: none;
+}
+
+input,
+textarea,
+select {
+    outline: none;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--color-accent);
+}

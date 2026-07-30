@@ -1,0 +1,133 @@
+/* =========================================================
+   TYPOGRAPHY
+   ========================================================= */
+
+body {
+    font-family: var(--font-body);
+    font-size: var(--body-md);
+    font-weight: var(--weight-regular);
+    line-height: var(--line-relaxed);
+    color: var(--text-secondary);
+    background: var(--color-background);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* =========================================================
+   HEADINGS
+   ========================================================= */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-heading);
+    color: var(--text-primary);
+    font-weight: var(--weight-semibold);
+    line-height: var(--line-tight);
+    letter-spacing: -0.02em;
+}
+
+h1 {
+    font-size: var(--heading-xl);
+}
+
+h2 {
+    font-size: var(--heading-lg);
+}
+
+h3 {
+    font-size: var(--heading-md);
+}
+
+h4 {
+    font-size: var(--heading-sm);
+}
+
+h5 {
+    font-size: 20px;
+}
+
+h6 {
+    font-size: 18px;
+}
+
+/* =========================================================
+   PARAGRAPH
+   ========================================================= */
+
+p {
+    max-width: 65ch;
+    margin-top: var(--space-4);
+    color: var(--text-secondary);
+}
+
+/* =========================================================
+   LINKS
+   ========================================================= */
+
+a {
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--color-accent);
+}
+
+/* =========================================================
+   STRONG
+   ========================================================= */
+
+strong {
+    font-weight: var(--weight-bold);
+}
+
+/* =========================================================
+   SMALL
+   ========================================================= */
+
+small {
+    font-size: var(--body-sm);
+    color: var(--text-muted);
+}
+
+/* =========================================================
+   DISPLAY CLASSES
+   ========================================================= */
+
+.display-xl {
+    font-family: var(--font-heading);
+    font-size: var(--display-xl);
+    font-weight: var(--weight-semibold);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+}
+
+.display-lg {
+    font-family: var(--font-heading);
+    font-size: var(--display-lg);
+    font-weight: var(--weight-semibold);
+    line-height: 1.1;
+}
+
+/* =========================================================
+   TEXT UTILITIES
+   ========================================================= */
+
+.text-center {
+    text-align: center;
+}
+
+.text-muted {
+    color: var(--text-muted);
+}
+
+.text-accent {
+    color: var(--color-accent);
+}
+
+.text-white {
+    color: var(--text-white);
+}
