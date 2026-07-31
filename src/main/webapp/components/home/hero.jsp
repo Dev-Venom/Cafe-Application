@@ -10,8 +10,10 @@
 	<section class="hero">
 
     <div class="container hero-container">
+    
+    <div class="hero-content reveal fade-left">
 
-        <div class="hero-content">
+        
 
             <span class="hero-badge">
                 Premium Coffee Experience
@@ -42,7 +44,7 @@
 
         </div>
 
-        <div class="hero-image">
+        <div class="hero-image reveal fade-right">
 
             <img
                 src= "assets/images/hero/hero-coffee.jpg"

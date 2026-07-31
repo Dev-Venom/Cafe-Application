@@ -30,6 +30,7 @@
 
 
 <body>
+<button id="backToTop" class="back-to-top" aria-label="Back to top">
 
     <%@ include file="components/layout/navbar.jsp" %>
     <%@ include file="components/home/hero.jsp" %>
@@ -39,7 +40,13 @@
     <%@ include file="components/home/our-craft.jsp" %>
     <%@ include file="components/home/testimonials.jsp" %>
     <%@ include file="components/home/cta.jsp" %>
+    <%@ include file ="components/layout/footer.jsp" %>
+    
+    <script src="${pageContext.request.contextPath}/assets/js/navbar.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/reveal.js"></script>
+    
 
+</button>
 </body>
 
 </html>

@@ -17,7 +17,7 @@
 
         </div>
 
-        <div class="testimonial">
+        <div class="testimonial reveal fade-up">
 
             <img
                 src="${pageContext.request.contextPath}/assets/images/people/customer-1.jpg"

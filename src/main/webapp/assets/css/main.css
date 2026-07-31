@@ -21,9 +21,12 @@
 @import url("./components/our-craft.css");
 @import url("./components/testimonials.css");
 @import url("./components/cta.css");
+@import url("./components/featured-menu.css");
 
 
 @import url("./pages/home.css");
+@import url("./pages/login.css");
+@import url("./pages/menu.css");
 
 
 

@@ -5,7 +5,7 @@
 
     <div class="container">
 
-        <div class="cta-content">
+        <div class="cta-content reveal zoom-in">
 
             <span class="section-tag">
 

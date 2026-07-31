@@ -20,7 +20,7 @@
 
         <div class="feature-grid">
 
-            <div class="feature-card">
+            <div class="feature-card reveal fade-up delay-1">
                 <div class="feature-icon">
     <img src="${pageContext.request.contextPath}/assets/icons/coffee.svg"
          alt="Fresh Coffee">
@@ -31,7 +31,7 @@
                 </p>
             </div>
 
-            <div class="feature-card">
+            <div class="feature-card reveal fade-up delay-2">
                 <div class="feature-icon">👨‍🍳</div>
                 <h3>Expert Baristas</h3>
                 <p>
@@ -39,7 +39,7 @@
                 </p>
             </div>
 
-            <div class="feature-card">
+            <div class="feature-card reveal fade-up delay-3">
                 <div class="feature-icon">🌱</div>
                 <h3>Premium Beans</h3>
                 <p>
@@ -47,7 +47,7 @@
                 </p>
             </div>
 
-            <div class="feature-card">
+            <div class="feature-card reveal fade-up delay-4">
                 <div class="feature-icon">🏡</div>
                 <h3>Warm Ambience</h3>
                 <p>

@@ -9,7 +9,7 @@
 
             <!-- LEFT IMAGE -->
 
-            <div class="story-image">
+            <div class="story-image reveal fade-right">
 
                 <img
                     src="${pageContext.request.contextPath}/assets/images/story/latte.jpg"
@@ -19,7 +19,7 @@
 
             <!-- RIGHT CONTENT -->
 
-            <div class="story-content">
+            <div class="story-content reveal fade-left">
 
                 <div class="story-number">
                     02

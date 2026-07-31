@@ -1,0 +1,105 @@
+/* ==========================================
+   MENU ITEM
+========================================== */
+
+.menu-item{
+
+    margin-bottom:140px;
+
+}
+
+.menu-grid{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    align-items:center;
+
+    gap:100px;
+
+}
+
+.menu-content{
+
+    max-width:520px;
+
+}
+
+.menu-content h2{
+
+    font-family:var(--font-heading);
+
+    font-size:68px;
+
+    font-weight:500;
+
+    line-height:1.05;
+
+    margin:18px 0;
+
+}
+
+.menu-content h3{
+
+    color:var(--color-accent);
+
+    font-size:24px;
+
+    font-weight:400;
+
+    margin-bottom:28px;
+
+}
+
+.menu-content p{
+
+    color:var(--text-muted);
+
+    line-height:1.9;
+
+    margin-bottom:36px;
+
+}
+
+.menu-price{
+
+    font-family:var(--font-heading);
+
+    font-size:40px;
+
+    margin-bottom:36px;
+
+    color:var(--color-primary);
+
+}
+
+.menu-image{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+}
+
+.menu-image img{
+
+    width:100%;
+
+    max-width:520px;
+
+    height:650px;
+
+    object-fit:cover;
+
+    border-radius:10px;
+
+    transition:transform .45s ease;
+
+}
+
+.menu-image img:hover{
+
+    transform:scale(1.02);
+
+}

@@ -1,6 +1,5 @@
-/* =========================================
-   COFFEE STORY
-========================================= */
+
+
 
 .coffee-story{
     padding:120px 0;
@@ -76,19 +75,42 @@
 }
 
 .story-image img{
+
     width:100%;
     max-width:520px;
+
     height:680px;
+
     object-fit:cover;
+
+    border-radius:12px;
+
     display:block;
-    border-radius:10px;
-    box-shadow:0 20px 50px rgba(0,0,0,.08);
-    transition:all .4s ease;
+
+    transition:
+
+        transform .6s ease,
+
+        filter .6s ease,
+
+        box-shadow .6s ease;
+
+    box-shadow:
+
+        0 18px 45px rgba(0,0,0,.08);
+
 }
 
-.story-image img:hover{
-    transform:scale(1.02);
-    box-shadow:0 30px 70px rgba(0,0,0,.12);
+.story-image:hover img{
+
+    transform:scale(1.04);
+
+    filter:brightness(1.03);
+
+    box-shadow:
+
+        0 30px 70px rgba(0,0,0,.14);
+
 }
 
 

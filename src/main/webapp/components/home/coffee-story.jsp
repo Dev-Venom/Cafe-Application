@@ -8,7 +8,7 @@
         <div class="story-grid">
 
             <!-- LEFT -->
-            <div class="story-content">
+            <div class="story-content reveal fade-left">
 
                 <div class="story-number">
                     01
@@ -36,7 +36,7 @@
             </div>
 
             <!-- RIGHT -->
-            <div class="story-image">
+            <div class="story-image reveal fade-right">
 
                 <img
                     src="${pageContext.request.contextPath}/assets/images/story/espresso.jpg"

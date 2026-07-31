@@ -1,0 +1,65 @@
+
+.back-to-top{
+
+    position:fixed;
+
+    right:32px;
+
+    bottom:32px;
+
+    width:52px;
+
+    height:52px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:var(--color-primary);
+
+    color:#fff;
+
+    font-size:22px;
+
+    cursor:pointer;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    opacity:0;
+
+    visibility:hidden;
+
+    transform:translateY(20px);
+
+    transition:
+        opacity .3s ease,
+        transform .3s ease,
+        visibility .3s ease;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+
+    z-index:999;
+
+}
+
+.back-to-top.show{
+
+    opacity:1;
+
+    visibility:visible;
+
+    transform:translateY(0);
+
+}
+
+.back-to-top:hover{
+
+    transform:translateY(-4px);
+
+    background:var(--color-accent);
+
+}
