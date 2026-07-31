@@ -63,7 +63,9 @@
 
     font-weight:500;
 
-    transition:.3s;
+    color:var(--text-primary);
+
+    transition:color var(--transition-fast);
 
 }
 

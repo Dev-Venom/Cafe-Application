@@ -20,17 +20,7 @@
 
         </ul>
 
-        <div class="nav-actions">
-
-            <a href="#" class="btn btn-outline">
-                Login
-            </a>
-
-            <a href="#" class="btn btn-primary">
-                Register
-            </a>
-
-        </div>
+        
 
     </div>
 

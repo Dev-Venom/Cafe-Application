@@ -32,6 +32,13 @@
 <body>
 
     <%@ include file="components/layout/navbar.jsp" %>
+    <%@ include file="components/home/hero.jsp" %>
+    <%@ include file="components/home/coffee-story.jsp" %>
+    <%@ include file="components/home/coffee-story-02.jsp" %>
+    <%@ include file="components/home/why-choose.jsp" %>
+    <%@ include file="components/home/our-craft.jsp" %>
+    <%@ include file="components/home/testimonials.jsp" %>
+    <%@ include file="components/home/cta.jsp" %>
 
 </body>
 
