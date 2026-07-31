@@ -1,0 +1,65 @@
+/* =========================================
+   TESTIMONIALS
+========================================= */
+
+.testimonials{
+
+    padding:140px 0;
+
+    background:white;
+
+}
+
+.testimonial{
+
+    max-width:820px;
+
+    margin:0 auto;
+
+    text-align:center;
+
+}
+
+.testimonial img{
+
+    width:120px;
+
+    height:120px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    margin-bottom:40px;
+
+}
+
+.testimonial blockquote{
+
+    font-family:var(--font-heading);
+
+    font-size:42px;
+
+    line-height:1.5;
+
+    font-weight:400;
+
+    margin-bottom:40px;
+
+    color:var(--text-primary);
+
+}
+
+.testimonial h3{
+
+    font-size:22px;
+
+    margin-bottom:8px;
+
+}
+
+.testimonial span{
+
+    color:var(--text-muted);
+
+}

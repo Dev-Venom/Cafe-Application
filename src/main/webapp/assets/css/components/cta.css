@@ -1,0 +1,55 @@
+/* =========================================
+   CTA
+========================================= */
+
+.cta{
+
+    padding:160px 0;
+
+    background:#2F241F;
+
+    color:white;
+
+}
+
+.cta-content{
+
+    max-width:760px;
+
+    margin:0 auto;
+
+    text-align:center;
+
+}
+
+.cta .section-tag{
+
+    color:#D8B37B;
+
+}
+
+.cta h2{
+
+    font-family:var(--font-heading);
+
+    font-size:60px;
+
+    font-weight:500;
+
+    line-height:1.2;
+
+    margin:24px 0;
+
+}
+
+.cta p{
+
+    font-size:18px;
+
+    line-height:1.9;
+
+    color:rgba(255,255,255,.75);
+
+    margin-bottom:48px;
+
+}
