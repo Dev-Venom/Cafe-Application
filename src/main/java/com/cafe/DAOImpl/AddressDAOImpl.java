@@ -76,7 +76,7 @@ public class AddressDAOImpl implements AddressDAO {
 				String houseno = res.getString("houseNo");
 				String street = res.getString("street");
 				String city = res.getString("city");
-				String state = res.getString("city");
+				String state = res.getString("state");
 				String pincode = res.getString("pincode");
 
 				address = new Address(id, uid, houseno, street, city, state, pincode);
@@ -106,7 +106,7 @@ public class AddressDAOImpl implements AddressDAO {
 
 			ResultSet res = pstmt.executeQuery();
 
-			if (res.next()) {
+			while (res.next()) {
 
 				System.out.println("Data Found");
 
@@ -115,7 +115,7 @@ public class AddressDAOImpl implements AddressDAO {
 				String houseno = res.getString("houseNo");
 				String street = res.getString("street");
 				String city = res.getString("city");
-				String state = res.getString("city");
+				String state = res.getString("state");
 				String pincode = res.getString("pincode");
 
 				Address address = new Address(id, uid, houseno, street, city, state, pincode);

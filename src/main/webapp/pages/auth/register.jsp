@@ -49,56 +49,79 @@
                 Become part of our premium coffee community.
             </p>
 
-            <form class="login-form">
+           <form action="${pageContext.request.contextPath}/register"
+      method="post"
+      class="login-form">
 
-                <div class="form-group">
+    <div class="form-group">
 
-                    <label>Full Name</label>
+        <label>Full Name</label>
 
-                    <input
-                        type="text"
-                        placeholder="Enter your full name">
+        <input
+            type="text"
+            name="userName"
+            placeholder="Enter your full name"
+            required>
 
-                </div>
+    </div>
 
-                <div class="form-group">
+    <div class="form-group">
 
-                    <label>Email</label>
+        <label>Email</label>
 
-                    <input
-                        type="email"
-                        placeholder="Enter your email">
+        <input
+            type="email"
+            name="email"
+            placeholder="Enter your email"
+            required>
 
-                </div>
+    </div>
 
-                <div class="form-group">
+    <div class="form-group">
 
-                    <label>Password</label>
+        <label>Phone Number</label>
 
-                    <input
-                        type="password"
-                        placeholder="Create a password">
+        <input
+            type="text"
+            name="phone"
+            placeholder="Enter your phone number"
+            required>
 
-                </div>
+    </div>
 
-                <div class="form-group">
+    <div class="form-group">
 
-                    <label>Confirm Password</label>
+        <label>Password</label>
 
-                    <input
-                        type="password"
-                        placeholder="Confirm password">
+        <input
+            type="password"
+            name="password"
+            placeholder="Create a password"
+            required>
 
-                </div>
+    </div>
 
-                <button
-                    class="btn btn-primary login-btn">
+    <div class="form-group">
 
-                    Create Account
+        <label>Confirm Password</label>
 
-                </button>
+        <input
+            type="password"
+            name="confirmPassword"
+            placeholder="Confirm password"
+            required>
 
-            </form>
+    </div>
+
+    <button
+        type="submit"
+        class="btn btn-primary login-btn">
+
+        Create Account
+
+    </button>
+
+</form>
 
             <div class="login-divider">
 

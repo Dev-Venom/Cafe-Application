@@ -6,54 +6,44 @@ import java.util.List;
 import com.cafe.DAO.ProductDAO;
 import com.cafe.DAOImpl.ProductDAOImpl;
 import com.cafe.Model.Product;
-import com.cafe.Model.User;
-
+import com.cafe.DAO.CategoryDAO;
+import com.cafe.DAOImpl.CategoryDAOImpl;
+import com.cafe.Model.Category;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/menu")
 public class MenuServlet extends HttpServlet {
 
     private ProductDAO productDAO;
+    private CategoryDAO categoryDAO;
 
     @Override
     public void init() {
 
-        productDAO = new ProductDAOImpl();
+    	productDAO = new ProductDAOImpl();
+    	categoryDAO = new CategoryDAOImpl();
 
     }
 
     @Override
     protected void doGet(HttpServletRequest request,
-            HttpServletResponse response)
+                         HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession(false);
+        List<Product> products = productDAO.getAllProducts();
+        List<Category> categories = categoryDAO.getAllCategories();
 
-        if(session == null ||
-           session.getAttribute("loggedInUser") == null) {
-
-            response.sendRedirect(
-                    request.getContextPath()
-                    +"/jsp/auth/login.jsp");
-
-            return;
-
-        }
-
-        List<Product> products =
-                productDAO.getAllProducts();
+        System.out.println("Products Loaded: " + products.size());
+        System.out.println("Categories Loaded: " + categories.size());
 
         request.setAttribute("products", products);
+        request.setAttribute("categories", categories);
 
-        request.getRequestDispatcher(
-                "/jsp/customer/menu.jsp")
-                .forward(request,response);
-
+        request.getRequestDispatcher("/pages/menu/menu.jsp")
+               .forward(request, response);
     }
-
 }

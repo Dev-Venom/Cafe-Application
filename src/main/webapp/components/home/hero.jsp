@@ -32,7 +32,7 @@
 
             <div class="hero-buttons">
 
-                <a href="#" class="btn btn-primary">
+                <a href="${pageContext.request.contextPath}/menu" class="btn btn-primary">
                     Explore Menu
                 </a>
 

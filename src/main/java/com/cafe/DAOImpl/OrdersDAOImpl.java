@@ -14,183 +14,231 @@ import com.cafe.utility.DBConnection;
 
 public class OrdersDAOImpl implements OrdersDAO {
 
-	private static final String INSERT_QUERY = "INSERT INTO orders(userId, addressId, totalAmount, paymentMethod, orderStatus) VALUES(?,?,?,?,?)";
+    private static final String INSERT_QUERY =
+            "INSERT INTO orders(userId, addressId, totalAmount, paymentMethod, orderStatus) VALUES(?,?,?,?,?)";
 
-	private static final String GET_QUERY = "SELECT * FROM orders WHERE orderId=?";
+    private static final String GET_QUERY =
+            "SELECT * FROM orders WHERE orderId=?";
 
-	private static final String GET_BY_USER_QUERY = "SELECT * FROM orders WHERE userId=?";
+    private static final String GET_BY_USER_QUERY =
+            "SELECT * FROM orders WHERE userId=? ORDER BY orderDate DESC";
 
-	private static final String GET_ALL_QUERY = "SELECT * FROM orders";
+    private static final String GET_ALL_QUERY =
+            "SELECT * FROM orders ORDER BY orderDate DESC";
 
-	private static final String UPDATE_QUERY = "UPDATE orders SET userId=?, addressId=?, totalAmount=?, paymentMethod=?, orderStatus=? WHERE orderId=?";
+    private static final String UPDATE_QUERY =
+            "UPDATE orders SET addressId=?, totalAmount=?, paymentMethod=?, orderStatus=? WHERE orderId=?";
 
-	private static final String DELETE_QUERY = "DELETE FROM orders WHERE orderId=?";
+    private static final String DELETE_QUERY =
+            "DELETE FROM orders WHERE orderId=?";
 
-	@Override
-	public boolean addOrder(Orders order) {
+    @Override
+    public int addOrder(Orders order) {
 
-		try (Connection con = DBConnection.getConnection();
-				PreparedStatement pstmt = con.prepareStatement(INSERT_QUERY)) {
+        int orderId = -1;
 
-			pstmt.setInt(1, order.getUserId());
-			pstmt.setInt(2, order.getAddressId());
-			pstmt.setDouble(3, order.getTotalAmount());
-			pstmt.setString(4, order.getPaymentMethod());
-			pstmt.setString(5, order.getOrderStatus());
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(
+                     INSERT_QUERY,
+                     Statement.RETURN_GENERATED_KEYS)) {
 
-			return pstmt.executeUpdate() > 0;
+            pstmt.setInt(1, order.getUserId());
+            pstmt.setInt(2, order.getAddressId());
+            pstmt.setDouble(3, order.getTotalAmount());
+            pstmt.setString(4, order.getPaymentMethod());
+            pstmt.setString(5, order.getOrderStatus());
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+            int rows = pstmt.executeUpdate();
 
-		return false;
-	}
+            if (rows > 0) {
 
-	@Override
-	public Orders getOrder(int orderId) {
+                ResultSet rs = pstmt.getGeneratedKeys();
 
-		Orders order = null;
+                if (rs.next()) {
 
-		try (Connection con = DBConnection.getConnection(); PreparedStatement pstmt = con.prepareStatement(GET_QUERY)) {
+                    orderId = rs.getInt(1);
 
-			pstmt.setInt(1, orderId);
+                }
+            }
 
-			ResultSet rs = pstmt.executeQuery();
+        } catch (Exception e) {
 
-			if (rs.next()) {
+            e.printStackTrace();
 
-				order = new Orders();
+        }
 
-				order.setOrderId(rs.getInt("orderId"));
-				order.setUserId(rs.getInt("userId"));
-				order.setAddressId(rs.getInt("addressId"));
-				order.setTotalAmount(rs.getDouble("totalAmount"));
-				order.setPaymentMethod(rs.getString("paymentMethod"));
-				order.setOrderStatus(rs.getString("orderStatus"));
+        return orderId;
+    }
 
-				Timestamp ts = rs.getTimestamp("orderDate");
-				if (ts != null) {
-					order.setOrderDate(ts.toLocalDateTime());
-				}
-			}
+    @Override
+    public Orders getOrder(int orderId) {
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        Orders order = null;
 
-		return order;
-	}
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(GET_QUERY)) {
 
-	@Override
-	public List<Orders> getOrdersByUserId(int userId) {
+            pstmt.setInt(1, orderId);
 
-		List<Orders> orders = new ArrayList<>();
+            ResultSet rs = pstmt.executeQuery();
 
-		try (Connection con = DBConnection.getConnection();
-				PreparedStatement pstmt = con.prepareStatement(GET_BY_USER_QUERY)) {
+            if (rs.next()) {
 
-			pstmt.setInt(1, userId);
+                order = new Orders();
 
-			ResultSet rs = pstmt.executeQuery();
+                order.setOrderId(rs.getInt("orderId"));
+                order.setUserId(rs.getInt("userId"));
+                order.setAddressId(rs.getInt("addressId"));
+                order.setTotalAmount(rs.getDouble("totalAmount"));
+                order.setPaymentMethod(rs.getString("paymentMethod"));
+                order.setOrderStatus(rs.getString("orderStatus"));
 
-			while (rs.next()) {
+                Timestamp ts = rs.getTimestamp("orderDate");
 
-				Orders order = new Orders();
+                if (ts != null) {
 
-				order.setOrderId(rs.getInt("orderId"));
-				order.setUserId(rs.getInt("userId"));
-				order.setAddressId(rs.getInt("addressId"));
-				order.setTotalAmount(rs.getDouble("totalAmount"));
-				order.setPaymentMethod(rs.getString("paymentMethod"));
-				order.setOrderStatus(rs.getString("orderStatus"));
+                    order.setOrderDate(ts.toLocalDateTime());
 
-				Timestamp ts = rs.getTimestamp("orderDate");
-				if (ts != null) {
-					order.setOrderDate(ts.toLocalDateTime());
-				}
+                }
 
-				orders.add(order);
-			}
+            }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        } catch (Exception e) {
 
-		return orders;
-	}
+            e.printStackTrace();
 
-	@Override
-	public List<Orders> getAllOrders() {
+        }
 
-		List<Orders> orders = new ArrayList<>();
+        return order;
+    }
 
-		try (Connection con = DBConnection.getConnection();
-				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery(GET_ALL_QUERY)) {
+    @Override
+    public List<Orders> getOrdersByUser(int userId) {
 
-			while (rs.next()) {
+        List<Orders> orders = new ArrayList<>();
 
-				Orders order = new Orders();
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(GET_BY_USER_QUERY)) {
 
-				order.setOrderId(rs.getInt("orderId"));
-				order.setUserId(rs.getInt("userId"));
-				order.setAddressId(rs.getInt("addressId"));
-				order.setTotalAmount(rs.getDouble("totalAmount"));
-				order.setPaymentMethod(rs.getString("paymentMethod"));
-				order.setOrderStatus(rs.getString("orderStatus"));
+            pstmt.setInt(1, userId);
 
-				Timestamp ts = rs.getTimestamp("orderDate");
-				if (ts != null) {
-					order.setOrderDate(ts.toLocalDateTime());
-				}
+            ResultSet rs = pstmt.executeQuery();
 
-				orders.add(order);
-			}
+            while (rs.next()) {
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+                Orders order = new Orders();
 
-		return orders;
-	}
+                order.setOrderId(rs.getInt("orderId"));
+                order.setUserId(rs.getInt("userId"));
+                order.setAddressId(rs.getInt("addressId"));
+                order.setTotalAmount(rs.getDouble("totalAmount"));
+                order.setPaymentMethod(rs.getString("paymentMethod"));
+                order.setOrderStatus(rs.getString("orderStatus"));
 
-	@Override
-	public boolean updateOrder(Orders order) {
+                Timestamp ts = rs.getTimestamp("orderDate");
 
-		try (Connection con = DBConnection.getConnection();
-				PreparedStatement pstmt = con.prepareStatement(UPDATE_QUERY)) {
+                if (ts != null) {
 
-			pstmt.setInt(1, order.getUserId());
-			pstmt.setInt(2, order.getAddressId());
-			pstmt.setDouble(3, order.getTotalAmount());
-			pstmt.setString(4, order.getPaymentMethod());
-			pstmt.setString(5, order.getOrderStatus());
-			pstmt.setInt(6, order.getOrderId());
+                    order.setOrderDate(ts.toLocalDateTime());
 
-			return pstmt.executeUpdate() > 0;
+                }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+                orders.add(order);
 
-		return false;
-	}
+            }
 
-	@Override
-	public boolean deleteOrder(int orderId) {
+        } catch (Exception e) {
 
-		try (Connection con = DBConnection.getConnection();
-				PreparedStatement pstmt = con.prepareStatement(DELETE_QUERY)) {
+            e.printStackTrace();
 
-			pstmt.setInt(1, orderId);
+        }
 
-			return pstmt.executeUpdate() > 0;
+        return orders;
+    }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+    @Override
+    public List<Orders> getAllOrders() {
 
-		return false;
-	}
+        List<Orders> orders = new ArrayList<>();
+
+        try (Connection con = DBConnection.getConnection();
+             Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery(GET_ALL_QUERY)) {
+
+            while (rs.next()) {
+
+                Orders order = new Orders();
+
+                order.setOrderId(rs.getInt("orderId"));
+                order.setUserId(rs.getInt("userId"));
+                order.setAddressId(rs.getInt("addressId"));
+                order.setTotalAmount(rs.getDouble("totalAmount"));
+                order.setPaymentMethod(rs.getString("paymentMethod"));
+                order.setOrderStatus(rs.getString("orderStatus"));
+
+                Timestamp ts = rs.getTimestamp("orderDate");
+
+                if (ts != null) {
+
+                    order.setOrderDate(ts.toLocalDateTime());
+
+                }
+
+                orders.add(order);
+
+            }
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+
+        return orders;
+    }
+
+    @Override
+    public boolean updateOrder(Orders order) {
+
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(UPDATE_QUERY)) {
+
+            pstmt.setInt(1, order.getAddressId());
+            pstmt.setDouble(2, order.getTotalAmount());
+            pstmt.setString(3, order.getPaymentMethod());
+            pstmt.setString(4, order.getOrderStatus());
+            pstmt.setInt(5, order.getOrderId());
+
+            return pstmt.executeUpdate() > 0;
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean deleteOrder(int orderId) {
+
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(DELETE_QUERY)) {
+
+            pstmt.setInt(1, orderId);
+
+            return pstmt.executeUpdate() > 0;
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+
+        return false;
+    }
+    
+    
+
 }

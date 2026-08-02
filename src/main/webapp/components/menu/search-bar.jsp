@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@ page language="java"
+    contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
 <section class="menu-search">
@@ -9,7 +10,7 @@
 
             <input
                 type="text"
-                placeholder="Search your favorite coffee...">
+                placeholder="Search coffee, tea or desserts...">
 
             <button class="btn btn-primary">
 

@@ -13,163 +13,184 @@ import com.cafe.utility.DBConnection;
 
 public class OrderItemDAOImpl implements OrderItemDAO {
 
-	private static final String INSERT_QUERY = "INSERT INTO order_item(orderId, productId, quantity, itemTotal) VALUES(?,?,?,?)";
+    private static final String INSERT_QUERY =
+            "INSERT INTO order_item(orderId, productId, quantity, itemTotal) VALUES(?,?,?,?)";
 
-	private static final String GET_QUERY = "SELECT * FROM order_item WHERE orderItemId=?";
+    private static final String GET_QUERY =
+            "SELECT * FROM order_item WHERE orderItemId=?";
 
-	private static final String GET_BY_ORDER_QUERY = "SELECT * FROM order_item WHERE orderId=?";
+    private static final String GET_BY_ORDER_QUERY =
+            "SELECT * FROM order_item WHERE orderId=?";
 
-	private static final String GET_ALL_QUERY = "SELECT * FROM order_item";
+    private static final String GET_ALL_QUERY =
+            "SELECT * FROM order_item";
 
-	private static final String UPDATE_QUERY = "UPDATE order_item SET orderId=?, productId=?, quantity=?, itemTotal=? WHERE orderItemId=?";
+    private static final String UPDATE_QUERY =
+            "UPDATE order_item SET quantity=?, itemTotal=? WHERE orderItemId=?";
 
-	private static final String DELETE_QUERY = "DELETE FROM order_item WHERE orderItemId=?";
+    private static final String DELETE_QUERY =
+            "DELETE FROM order_item WHERE orderItemId=?";
 
-	@Override
-	public boolean addOrderItem(OrderItem orderItem) {
+    @Override
+    public boolean addOrderItem(OrderItem item) {
 
-		try (Connection con = DBConnection.getConnection();
-				PreparedStatement pstmt = con.prepareStatement(INSERT_QUERY)) {
+        try(Connection con = DBConnection.getConnection();
+            PreparedStatement pstmt = con.prepareStatement(INSERT_QUERY)) {
 
-			pstmt.setInt(1, orderItem.getOrderId());
-			pstmt.setInt(2, orderItem.getProductId());
-			pstmt.setInt(3, orderItem.getQuantity());
-			pstmt.setDouble(4, orderItem.getItemTotal());
+            pstmt.setInt(1, item.getOrderId());
+            pstmt.setInt(2, item.getProductId());
+            pstmt.setInt(3, item.getQuantity());
+            pstmt.setDouble(4, item.getItemTotal());
 
-			return pstmt.executeUpdate() > 0;
+            return pstmt.executeUpdate() > 0;
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        } catch(Exception e) {
 
-		return false;
-	}
+            e.printStackTrace();
 
-	@Override
-	public OrderItem getOrderItem(int orderItemId) {
+        }
 
-		OrderItem orderItem = null;
+        return false;
+    }
 
-		try (Connection con = DBConnection.getConnection(); PreparedStatement pstmt = con.prepareStatement(GET_QUERY)) {
+    @Override
+    public OrderItem getOrderItem(int orderItemId) {
 
-			pstmt.setInt(1, orderItemId);
+        OrderItem item = null;
 
-			ResultSet rs = pstmt.executeQuery();
+        try(Connection con = DBConnection.getConnection();
+            PreparedStatement pstmt = con.prepareStatement(GET_QUERY)) {
 
-			if (rs.next()) {
+            pstmt.setInt(1, orderItemId);
 
-				orderItem = new OrderItem();
+            ResultSet rs = pstmt.executeQuery();
 
-				orderItem.setOrderItemId(rs.getInt("orderItemId"));
-				orderItem.setOrderId(rs.getInt("orderId"));
-				orderItem.setProductId(rs.getInt("productId"));
-				orderItem.setQuantity(rs.getInt("quantity"));
-				orderItem.setItemTotal(rs.getDouble("itemTotal"));
-			}
+            if(rs.next()) {
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+                item = new OrderItem();
 
-		return orderItem;
-	}
+                item.setOrderItemId(rs.getInt("orderItemId"));
+                item.setOrderId(rs.getInt("orderId"));
+                item.setProductId(rs.getInt("productId"));
+                item.setQuantity(rs.getInt("quantity"));
+                item.setItemTotal(rs.getDouble("itemTotal"));
 
-	@Override
-	public List<OrderItem> getOrderItemsByOrderId(int orderId) {
+            }
 
-		List<OrderItem> orderItems = new ArrayList<>();
+        } catch(Exception e) {
 
-		try (Connection con = DBConnection.getConnection();
-				PreparedStatement pstmt = con.prepareStatement(GET_BY_ORDER_QUERY)) {
+            e.printStackTrace();
 
-			pstmt.setInt(1, orderId);
+        }
 
-			ResultSet rs = pstmt.executeQuery();
+        return item;
+    }
 
-			while (rs.next()) {
+    @Override
+    public List<OrderItem> getOrderItemsByOrder(int orderId) {
 
-				OrderItem orderItem = new OrderItem();
+        List<OrderItem> list = new ArrayList<>();
 
-				orderItem.setOrderItemId(rs.getInt("orderItemId"));
-				orderItem.setOrderId(rs.getInt("orderId"));
-				orderItem.setProductId(rs.getInt("productId"));
-				orderItem.setQuantity(rs.getInt("quantity"));
-				orderItem.setItemTotal(rs.getDouble("itemTotal"));
+        try(Connection con = DBConnection.getConnection();
+            PreparedStatement pstmt = con.prepareStatement(GET_BY_ORDER_QUERY)) {
 
-				orderItems.add(orderItem);
-			}
+            pstmt.setInt(1, orderId);
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+            ResultSet rs = pstmt.executeQuery();
 
-		return orderItems;
-	}
+            while(rs.next()) {
 
-	@Override
-	public List<OrderItem> getAllOrderItems() {
+                OrderItem item = new OrderItem();
 
-		List<OrderItem> orderItems = new ArrayList<>();
+                item.setOrderItemId(rs.getInt("orderItemId"));
+                item.setOrderId(rs.getInt("orderId"));
+                item.setProductId(rs.getInt("productId"));
+                item.setQuantity(rs.getInt("quantity"));
+                item.setItemTotal(rs.getDouble("itemTotal"));
 
-		try (Connection con = DBConnection.getConnection();
-				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery(GET_ALL_QUERY)) {
+                list.add(item);
 
-			while (rs.next()) {
+            }
 
-				OrderItem orderItem = new OrderItem();
+        } catch(Exception e) {
 
-				orderItem.setOrderItemId(rs.getInt("orderItemId"));
-				orderItem.setOrderId(rs.getInt("orderId"));
-				orderItem.setProductId(rs.getInt("productId"));
-				orderItem.setQuantity(rs.getInt("quantity"));
-				orderItem.setItemTotal(rs.getDouble("itemTotal"));
+            e.printStackTrace();
 
-				orderItems.add(orderItem);
-			}
+        }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        return list;
+    }
 
-		return orderItems;
-	}
+    @Override
+    public List<OrderItem> getAllOrderItems() {
 
-	@Override
-	public boolean updateOrderItem(OrderItem orderItem) {
+        List<OrderItem> list = new ArrayList<>();
 
-		try (Connection con = DBConnection.getConnection();
-				PreparedStatement pstmt = con.prepareStatement(UPDATE_QUERY)) {
+        try(Connection con = DBConnection.getConnection();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(GET_ALL_QUERY)) {
 
-			pstmt.setInt(1, orderItem.getOrderId());
-			pstmt.setInt(2, orderItem.getProductId());
-			pstmt.setInt(3, orderItem.getQuantity());
-			pstmt.setDouble(4, orderItem.getItemTotal());
-			pstmt.setInt(5, orderItem.getOrderItemId());
+            while(rs.next()) {
 
-			return pstmt.executeUpdate() > 0;
+                OrderItem item = new OrderItem();
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+                item.setOrderItemId(rs.getInt("orderItemId"));
+                item.setOrderId(rs.getInt("orderId"));
+                item.setProductId(rs.getInt("productId"));
+                item.setQuantity(rs.getInt("quantity"));
+                item.setItemTotal(rs.getDouble("itemTotal"));
 
-		return false;
-	}
+                list.add(item);
 
-	@Override
-	public boolean deleteOrderItem(int orderItemId) {
+            }
 
-		try (Connection con = DBConnection.getConnection();
-				PreparedStatement pstmt = con.prepareStatement(DELETE_QUERY)) {
+        } catch(Exception e) {
 
-			pstmt.setInt(1, orderItemId);
+            e.printStackTrace();
 
-			return pstmt.executeUpdate() > 0;
+        }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        return list;
+    }
 
-		return false;
-	}
+    @Override
+    public boolean updateOrderItem(OrderItem item) {
+
+        try(Connection con = DBConnection.getConnection();
+            PreparedStatement pstmt = con.prepareStatement(UPDATE_QUERY)) {
+
+            pstmt.setInt(1, item.getQuantity());
+            pstmt.setDouble(2, item.getItemTotal());
+            pstmt.setInt(3, item.getOrderItemId());
+
+            return pstmt.executeUpdate() > 0;
+
+        } catch(Exception e) {
+
+            e.printStackTrace();
+
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean deleteOrderItem(int orderItemId) {
+
+        try(Connection con = DBConnection.getConnection();
+            PreparedStatement pstmt = con.prepareStatement(DELETE_QUERY)) {
+
+            pstmt.setInt(1, orderItemId);
+
+            return pstmt.executeUpdate() > 0;
+
+        } catch(Exception e) {
+
+            e.printStackTrace();
+
+        }
+
+        return false;
+    }
+
 }

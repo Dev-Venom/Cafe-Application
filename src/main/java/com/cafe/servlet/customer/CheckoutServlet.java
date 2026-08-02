@@ -1,17 +1,15 @@
 package com.cafe.servlet.customer;
 
+
 import java.io.IOException;
 import java.util.List;
 
-import com.cafe.DAO.AddressDAO;
 import com.cafe.DAO.CartDAO;
 import com.cafe.DAO.CartItemDAO;
-import com.cafe.DAOImpl.AddressDAOImpl;
 import com.cafe.DAOImpl.CartDAOImpl;
 import com.cafe.DAOImpl.CartItemDAOImpl;
-import com.cafe.Model.Address;
 import com.cafe.Model.Cart;
-import com.cafe.Model.CartItem;
+import com.cafe.Model.CartItemDetails;
 import com.cafe.Model.User;
 
 import jakarta.servlet.ServletException;
@@ -19,67 +17,66 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/checkout")
 public class CheckoutServlet extends HttpServlet {
 
     private CartDAO cartDAO;
     private CartItemDAO cartItemDAO;
-    private AddressDAO addressDAO;
 
     @Override
     public void init() {
 
         cartDAO = new CartDAOImpl();
         cartItemDAO = new CartItemDAOImpl();
-        addressDAO = new AddressDAOImpl();
 
     }
-
+    
     @Override
     protected void doGet(HttpServletRequest request,
-            HttpServletResponse response)
+                         HttpServletResponse response)
             throws ServletException, IOException {
+    	
+    	User user =
+    			(User)request.getSession()
+    			             .getAttribute("loggedInUser");
 
-        HttpSession session = request.getSession(false);
+    			if(user == null){
 
-        if (session == null ||
-            session.getAttribute("loggedInUser") == null) {
+    			    response.sendRedirect(
+    			            request.getContextPath() + "/login");
 
-            response.sendRedirect(
-                    request.getContextPath() +
-                    "/jsp/auth/login.jsp");
+    			    return;
+    			}
+    			
+    			Cart cart = cartDAO.getCartByUserId(user.getUserId());
 
-            return;
-        }
+    			if(cart == null){
 
-        User user =
-                (User) session.getAttribute("loggedInUser");
+    			    response.sendRedirect(
+    			            request.getContextPath() + "/cart");
 
-        Cart cart =
-                cartDAO.getCartByUserId(user.getUserId());
+    			    return;
+    			}
+    			
+    			List<CartItemDetails> cartItems =
+    			        cartItemDAO.getCartItemDetails(cart.getCartId());
+    			
+    			double subtotal = 0;
 
-        if (cart == null) {
+    			for(CartItemDetails item : cartItems){
 
-            response.sendRedirect(
-                    request.getContextPath() +
-                    "/cart");
+    			    subtotal += item.getItemTotal();
 
-            return;
-        }
+    			}
+    			
+    			request.setAttribute("cartItems", cartItems);
+    			request.setAttribute("subtotal", subtotal);
 
-        List<CartItem> cartItems =
-                cartItemDAO.getAllCartItems();
+    			response.sendRedirect(
+    			        request.getContextPath()
+    			        + "/order-success?orderId=" + orderId);
 
-        List<Address> addresses =
-                addressDAO.getAddressByUser(user.getUserId());
-
-        request.setAttribute("cartItems", cartItems);
-        request.setAttribute("addresses", addresses);
-
-        request.getRequestDispatcher(
-                "/jsp/customer/checkout.jsp")
-                .forward(request, response);
     }
+
 }

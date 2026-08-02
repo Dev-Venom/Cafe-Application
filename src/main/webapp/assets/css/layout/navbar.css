@@ -172,3 +172,15 @@
     gap:16px;
 
 }
+
+.nav-user{
+
+    font-size:15px;
+
+    font-weight:600;
+
+    color:var(--color-primary);
+
+    margin-right:18px;
+
+}
