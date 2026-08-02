@@ -35,8 +35,7 @@ public class PlaceOrderServlet extends HttpServlet {
 	private OrderItemDAO orderItemDAO;
 	private CartDAO cartDAO;
 	private CartItemDAO cartItemDAO;
-	private ProductDAO productDAO;
-	private AddressDAO addressDAO;
+	
 	
 	@Override
 	public void init() {
@@ -47,115 +46,94 @@ public class PlaceOrderServlet extends HttpServlet {
 	    cartDAO = new CartDAOImpl();
 	    cartItemDAO = new CartItemDAOImpl();
 
-	    productDAO = new ProductDAOImpl();
-	    addressDAO = new AddressDAOImpl();
+	   
 
 	}
 
-    @Override
-    protected void doPost(HttpServletRequest request,
-                          HttpServletResponse response)
-            throws ServletException, IOException {
-    	
-    	HttpSession session = request.getSession(false);
+	@Override
+	protected void doPost(HttpServletRequest request,
+	                      HttpServletResponse response)
+	        throws ServletException, IOException {
 
-    	if(session == null){
+	    HttpSession session = request.getSession(false);
 
-    	    response.sendRedirect(request.getContextPath()+"/login");
+	    if (session == null) {
+	        response.sendRedirect(request.getContextPath() + "/login");
+	        return;
+	    }
 
-    	    return;
-    	}
+	    User user = (User) session.getAttribute("loggedInUser");
 
-    	User user =
-    	(User)session.getAttribute("loggedInUser");
+	    if (user == null) {
+	        response.sendRedirect(request.getContextPath() + "/login");
+	        return;
+	    }
 
-    	if(user == null){
+	    String paymentMethod = request.getParameter("paymentMethod");
+	    String addressIdParam = request.getParameter("addressId");
 
-    	    response.sendRedirect(request.getContextPath()+"/login");
+	    if (paymentMethod == null || addressIdParam == null) {
+	        response.sendRedirect(request.getContextPath() + "/checkout");
+	        return;
+	    }
 
-    	    return;
-    	}
-    	
-    	String paymentMethod =
-    			request.getParameter("paymentMethod");
+	    int addressId = Integer.parseInt(addressIdParam);
 
-    			String addressIdParam =
-    			request.getParameter("addressId");
+	    Cart cart = cartDAO.getCartByUserId(user.getUserId());
 
-    			if(paymentMethod == null || addressIdParam == null){
+	    if (cart == null) {
+	        response.sendRedirect(request.getContextPath() + "/cart");
+	        return;
+	    }
 
-    			    response.sendRedirect(request.getContextPath()+"/checkout");
+	    List<CartItem> cartItems =
+	            cartItemDAO.getCartItemsByCartId(cart.getCartId());
 
-    			    return;
-    			}
+	    if (cartItems == null || cartItems.isEmpty()) {
+	        response.sendRedirect(request.getContextPath() + "/cart");
+	        return;
+	    }
 
-    			int addressId =
-    			Integer.parseInt(addressIdParam);
-    			
-    			Cart cart =
-    					cartDAO.getCartByUserId(user.getUserId());
+	    double totalAmount = 0.0;
 
-    					if(cart == null){
+	    for (CartItem item : cartItems) {
+	        totalAmount += item.getItemTotal();
+	    }
 
-    					    response.sendRedirect(request.getContextPath()+"/cart");
+	    Orders order = new Orders();
 
-    					    return;
-    					}
-    					
-    					List<CartItem> cartItems =
-    							cartItemDAO.getCartItemsByCartId(cart.getCartId());
+	    order.setUserId(user.getUserId());
+	    order.setAddressId(addressId);
+	    order.setTotalAmount(totalAmount);
+	    order.setPaymentMethod(paymentMethod);
+	    order.setOrderStatus("PENDING");
 
-    							if(cartItems.isEmpty()){
+	    int orderId = ordersDAO.addOrder(order);
 
-    							    response.sendRedirect(request.getContextPath()+"/cart");
+	    if (orderId == -1) {
+	        response.sendRedirect(request.getContextPath() + "/checkout");
+	        return;
+	    }
 
-    							    return;
-    							}
-    							
-    							double totalAmount = 0.0;
+	    for (CartItem cartItem : cartItems) {
 
-    							for (CartItem item : cartItems) {
+	        OrderItem orderItem = new OrderItem();
 
-    							    totalAmount += item.getItemTotal();
+	        orderItem.setOrderId(orderId);
+	        orderItem.setProductId(cartItem.getProductId());
+	        orderItem.setQuantity(cartItem.getQuantity());
+	        orderItem.setItemTotal(cartItem.getItemTotal());
 
-    							}
-    							
-    							Orders order = new Orders();
+	        orderItemDAO.addOrderItem(orderItem);
+	    }
 
-    							order.setUserId(user.getUserId());
-    							order.setAddressId(addressId);
-    							order.setTotalAmount(totalAmount);
-    							order.setPaymentMethod(paymentMethod);
-    							order.setOrderStatus("PENDING");
-    							
-    							int orderId = ordersDAO.addOrder(order);
+	    
+	    cartItemDAO.clearCartItems(cart.getCartId());
 
-    							if (orderId == -1) {
-
-    							    response.sendRedirect(
-    							            request.getContextPath() + "/checkout");
-
-    							    return;
-    							}
-    							
-    							for (CartItem cartItem : cartItems) {
-
-    							    OrderItem orderItem = new OrderItem();
-
-    							    orderItem.setOrderId(orderId);
-    							    orderItem.setProductId(cartItem.getProductId());
-    							    orderItem.setQuantity(cartItem.getQuantity());
-    							    orderItem.setItemTotal(cartItem.getItemTotal());
-
-    							    orderItemDAO.addOrderItem(orderItem);
-
-    							}
-    							
-    							response.sendRedirect(
-    							        request.getContextPath()
-    							        + "/order-success?orderId=" + orderId);
-
-    }
+	    response.sendRedirect(
+	            request.getContextPath()
+	            + "/order-success?orderId=" + orderId);
+	}
     
     
     

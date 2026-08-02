@@ -1,18 +1,60 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page import="java.util.List"%>
+<%@ page import="com.cafe.Model.Address"%>
 
-    <section class="checkout-card">
+<%
+List<Address> addresses =
+        (List<Address>) request.getAttribute("addresses");
+%>
 
-    <h2>
+<section class="checkout-card">
 
-        Delivery Address
+    <h2>Delivery Address</h2>
 
-    </h2>
+    <% if(addresses != null && !addresses.isEmpty()) { %>
 
-    <p>
+        <% for(Address address : addresses) { %>
 
-        Your saved delivery address will appear here.
+            <label class="address-option">
 
-    </p>
+                <input
+                    type="radio"
+                    name="addressId"
+                    value="<%=address.getAddressId()%>"
+                    <%=address == addresses.get(0) ? "checked" : ""%>>
+
+                <strong>
+                    <%=address.getHouseNo()%>
+                </strong>
+
+                <br>
+
+                <%=address.getStreet()%>
+
+                <br>
+
+                <%=address.getCity()%>,
+                <%=address.getState()%>
+
+                -
+
+                <%=address.getPincode()%>
+
+            </label>
+
+            <br><br>
+
+        <% } %>
+
+    <% } else { %>
+
+        <p>No delivery address found.</p>
+
+        <a href="<%=request.getContextPath()%>/profile">
+
+            Add Address
+
+        </a>
+
+    <% } %>
 
 </section>

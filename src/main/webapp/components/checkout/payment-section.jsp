@@ -1,47 +1,64 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@ page language="java"
+    contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
 <section class="checkout-card">
 
-    <h2>
+    <h2>Payment Method</h2>
 
-        Payment Method
+    <div class="payment-options">
 
-    </h2>
+        <label class="payment-option">
 
-    <label>
+            <input
+                type="radio"
+                name="paymentMethod"
+                value="COD"
+                checked>
 
-        <input
-            type="radio"
-            name="paymentMethod"
-            checked>
+            <span>Cash on Delivery (COD)</span>
 
-        Cash on Delivery
+        </label>
 
-    </label>
+        <br><br>
 
-    <br><br>
+        <label class="payment-option">
 
-    <label>
+            <input
+                type="radio"
+                name="paymentMethod"
+                value="UPI">
 
-        <input
-            type="radio"
-            name="paymentMethod">
+            <span>UPI</span>
 
-        UPI
+        </label>
 
-    </label>
+        <br><br>
 
-    <br><br>
+        <label class="payment-option">
 
-    <label>
+            <input
+                type="radio"
+                name="paymentMethod"
+                value="CARD">
 
-        <input
-            type="radio"
-            name="paymentMethod">
+            <span>Credit / Debit Card</span>
 
-        Credit / Debit Card
+        </label>
 
-    </label>
+        <br><br>
 
-</section>    
+        <label class="payment-option">
+
+            <input
+                type="radio"
+                name="paymentMethod"
+                value="NET_BANKING">
+
+            <span>Net Banking</span>
+
+        </label>
+
+    </div>
+
+</section>

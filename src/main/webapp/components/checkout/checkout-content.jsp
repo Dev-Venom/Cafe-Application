@@ -1,27 +1,30 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-
-    <section class="checkout-section">
+<section class="checkout-section">
 
     <div class="container">
 
-        <div class="checkout-layout">
+        <form
+            action="<%=request.getContextPath()%>/place-order"
+            method="post">
 
-            <div class="checkout-left">
+            <div class="checkout-layout">
 
-                <%@ include file="address-details.jsp" %>
+                <div class="checkout-left">
 
-                <%@ include file="payment-section.jsp" %>
+                    <%@ include file="address-details.jsp" %>
+
+                    <%@ include file="payment-section.jsp" %>
+
+                </div>
+
+                <div class="checkout-right">
+
+                    <%@ include file="order-summary.jsp" %>
+
+                </div>
 
             </div>
 
-            <div class="checkout-right">
-
-                <%@ include file="order-summary.jsp" %>
-
-            </div>
-
-        </div>
+        </form>
 
     </div>
 

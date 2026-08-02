@@ -11,6 +11,9 @@ import com.cafe.DAOImpl.CartItemDAOImpl;
 import com.cafe.Model.Cart;
 import com.cafe.Model.CartItemDetails;
 import com.cafe.Model.User;
+import com.cafe.DAO.AddressDAO;
+import com.cafe.DAOImpl.AddressDAOImpl;
+import com.cafe.Model.Address;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -23,12 +26,14 @@ public class CheckoutServlet extends HttpServlet {
 
     private CartDAO cartDAO;
     private CartItemDAO cartItemDAO;
+    private AddressDAO addressDAO;
 
     @Override
     public void init() {
 
         cartDAO = new CartDAOImpl();
         cartItemDAO = new CartItemDAOImpl();
+        addressDAO = new AddressDAOImpl();
 
     }
     
@@ -70,12 +75,17 @@ public class CheckoutServlet extends HttpServlet {
 
     			}
     			
+    			List<Address> addresses =
+    			        addressDAO.getAddressByUser(user.getUserId());
+
+    			request.setAttribute("addresses", addresses);
+    			
     			request.setAttribute("cartItems", cartItems);
     			request.setAttribute("subtotal", subtotal);
 
-    			response.sendRedirect(
-    			        request.getContextPath()
-    			        + "/order-success?orderId=" + orderId);
+    			request.getRequestDispatcher(
+    			        "/pages/customer/checkout.jsp")
+    			        .forward(request, response);
 
     }
 

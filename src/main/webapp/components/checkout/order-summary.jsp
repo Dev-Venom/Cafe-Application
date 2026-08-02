@@ -50,8 +50,7 @@ double total = subtotal + shipping;
 
     <br>
 
-   <form action="<%=request.getContextPath()%>/place-order"
-      method="post">
+
 
     <button type="submit"
             class="btn btn-primary summary-btn">
@@ -60,6 +59,6 @@ double total = subtotal + shipping;
 
     </button>
 
-</form>
+
 
 </section>

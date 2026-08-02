@@ -122,9 +122,7 @@ public class AddressDAOImpl implements AddressDAO {
 
 				list.add(address);
 
-			} else {
-				System.out.println("Data Not Found");
-			}
+			} 
 
 		} catch (SQLException e) {
 			e.printStackTrace();
