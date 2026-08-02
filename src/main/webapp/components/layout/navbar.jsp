@@ -1,12 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+    <%@page import="com.cafe.Model.User"%>
+
+<%
+User loggedInUser = (User) session.getAttribute("loggedInUser");
+%>
 
 <nav class="navbar">
 
     <div class="container navbar-container">
 
       
-        <a href="${pageContext.request.contextPath}/index.jsp" class="logo">
+        <a href="${pageContext.request.contextPath}/" class="logo">
             Pour<span> d'Or</span>
         </a>
 
@@ -17,13 +23,13 @@
 
                 <li>
                     <a class="active"
-                       href="${pageContext.request.contextPath}/index.jsp">
+                       href="${pageContext.request.contextPath}/">
                         Home
                     </a>
                 </li>
 
                 <li>
-                    <a href="${pageContext.request.contextPath}/pages/menu/menu.jsp">
+                    <a href="${pageContext.request.contextPath}/menu">
                         Menu
                     </a>
                 </li>
@@ -48,21 +54,40 @@
 
         <div class="nav-actions">
 
-            <a href="${pageContext.request.contextPath}/pages/auth/login.jsp"
-               class="btn btn-secondary">
+<% if(loggedInUser == null){ %>
 
-                Login
+    <a href="${pageContext.request.contextPath}/pages/auth/login.jsp"
+       class="btn btn-outline">
 
-            </a>
+        Login
 
-            <a href="${pageContext.request.contextPath}/pages/auth/register.jsp"
-               class="btn btn-primary">
+    </a>
 
-                Register
+    <a href="${pageContext.request.contextPath}/pages/auth/register.jsp"
+       class="btn btn-primary">
 
-            </a>
+        Register
 
-        </div>
+    </a>
+
+<% } else { %>
+
+    <span class="nav-user">
+
+        Hi, <%= loggedInUser.getUserName() %>
+
+    </span>
+
+    <a href="${pageContext.request.contextPath}/logout"
+       class="btn btn-primary">
+
+        Logout
+
+    </a>
+
+<% } %>
+
+</div>
 
     </div>
 

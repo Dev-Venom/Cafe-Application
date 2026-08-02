@@ -15,5 +15,8 @@ public interface ProductDAO {
 	boolean updateProduct(Product product);
 
 	boolean deleteProduct(int productId);
-
+	
+	List<Product> getProductsByCategory(int categoryId, int productId);
+	
+	boolean updateStock(int productId, int quantity);
 }

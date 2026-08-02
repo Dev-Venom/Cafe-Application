@@ -1,23 +1,40 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page import="java.util.List" %>
+<%@ page import="com.cafe.Model.Category" %>
 
-    <section class="menu-filter">
+<%
+List<Category> categories =
+(List<Category>)request.getAttribute("categories");
+%>
+
+<section class="menu-category">
 
     <div class="container">
 
-        <div class="filter-list">
+        <div class="category-list">
 
-            <button class="filter-btn active">All</button>
+            <a href="#" class="category-pill active">
 
-            <button class="filter-btn">Espresso</button>
+                All
 
-            <button class="filter-btn">Latte</button>
+            </a>
 
-            <button class="filter-btn">Cold Brew</button>
+            <%
+            if(categories != null){
 
-            <button class="filter-btn">Tea</button>
+                for(Category category : categories){
+            %>
 
-            <button class="filter-btn">Desserts</button>
+                <a href="#"
+                   class="category-pill">
+
+                    <%=category.getCategoryName()%>
+
+                </a>
+
+            <%
+                }
+            }
+            %>
 
         </div>
 

@@ -23,6 +23,12 @@ public class ProductDAOImpl implements ProductDAO {
 	private static final String UPDATE_QUERY = "UPDATE product SET categoryId=?, productName=?, description=?, price=?, stock=?, image=?, rating=?, isAvailable=? WHERE productId=?";
 
 	private static final String DELETE_QUERY = "DELETE FROM product WHERE productId=?";
+	
+	private static final String GET_RELATED_PRODUCTS_QUERY =
+	        "SELECT * FROM product WHERE categoryId=? AND productId<>? LIMIT 4";
+	
+	private static final String UPDATE_STOCK_QUERY =
+	        "UPDATE product SET stock = stock - ? WHERE productId=?";
 
 	@Override
 	public boolean addProduct(Product product) {
@@ -164,5 +170,64 @@ public class ProductDAOImpl implements ProductDAO {
 		}
 
 		return false;
+	}
+	
+	@Override
+	public List<Product> getProductsByCategory(int categoryId, int productId) {
+
+	    List<Product> products = new ArrayList<>();
+
+	    try (Connection con = DBConnection.getConnection();
+	         PreparedStatement pstmt =
+	                 con.prepareStatement(GET_RELATED_PRODUCTS_QUERY)) {
+
+	        pstmt.setInt(1, categoryId);
+	        pstmt.setInt(2, productId);
+
+	        ResultSet rs = pstmt.executeQuery();
+
+	        while (rs.next()) {
+
+	            Product product = new Product();
+
+	            product.setProductId(rs.getInt("productId"));
+	            product.setCategoryId(rs.getInt("categoryId"));
+	            product.setProductName(rs.getString("productName"));
+	            product.setDescription(rs.getString("description"));
+	            product.setPrice(rs.getDouble("price"));
+	            product.setStock(rs.getInt("stock"));
+	            product.setImage(rs.getString("image"));
+	            product.setRating(rs.getDouble("rating"));
+	            product.setAvailable(rs.getBoolean("isAvailable"));
+
+	            products.add(product);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return products;
+	}
+	
+	@Override
+	public boolean updateStock(int productId, int quantity) {
+
+	    try (Connection con = DBConnection.getConnection();
+	         PreparedStatement pstmt =
+	                 con.prepareStatement(UPDATE_STOCK_QUERY)) {
+
+	        pstmt.setInt(1, quantity);
+	        pstmt.setInt(2, productId);
+
+	        return pstmt.executeUpdate() > 0;
+
+	    } catch (Exception e) {
+
+	        e.printStackTrace();
+
+	    }
+
+	    return false;
 	}
 }

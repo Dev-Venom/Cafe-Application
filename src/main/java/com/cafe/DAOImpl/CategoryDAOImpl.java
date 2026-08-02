@@ -22,7 +22,7 @@ public class CategoryDAOImpl implements CategoryDAO {
 
 	private static final String DELETE_QUERY = "DELETE FROM category WHERE categoryId=?";
 
-	private static final String CHECK_CART_EXISTS_QUERY = "SELECT 1 FROM cart WHERE userId = ?";
+	
 
 	@Override
 	public boolean addCategory(Category category) {
@@ -78,13 +78,17 @@ public class CategoryDAOImpl implements CategoryDAO {
 
 			while (res.next()) {
 
-				Category category = new Category();
+			    System.out.println("Category Found: " + res.getString("categoryName"));
 
-				category.setCategoryId(res.getInt("categoryId"));
-				category.setCategoryName(res.getString("categoryName"));
+			    Category category = new Category();
 
-				categories.add(category);
+			    category.setCategoryId(res.getInt("categoryId"));
+			    category.setCategoryName(res.getString("categoryName"));
+
+			    categories.add(category);
 			}
+
+			System.out.println("Total Categories Loaded: " + categories.size());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -128,22 +132,5 @@ public class CategoryDAOImpl implements CategoryDAO {
 		return false;
 	}
 
-	@Override
-	public boolean isCartExists(int userId) {
-
-		try (Connection con = DBConnection.getConnection();
-				PreparedStatement pstmt = con.prepareStatement(CHECK_CART_EXISTS_QUERY)) {
-
-			pstmt.setInt(1, userId);
-
-			ResultSet rs = pstmt.executeQuery();
-
-			return rs.next();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return false;
-	}
+	
 }

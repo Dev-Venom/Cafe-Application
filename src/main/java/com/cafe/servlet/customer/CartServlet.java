@@ -40,23 +40,47 @@ public class CartServlet extends HttpServlet {
         HttpSession session =
                 request.getSession(false);
 
+        if(session == null ||
+           session.getAttribute("loggedInUser") == null){
+
+            response.sendRedirect(
+                    request.getContextPath()+"/login");
+
+            return;
+        }
+
         User user =
-                (User)session.getAttribute("loggedInUser");
+                (User) session.getAttribute("loggedInUser");
 
         Cart cart =
-                cartDAO.getCartByUserId(
-                        user.getUserId());
+                cartDAO.getCartByUserId(user.getUserId());
+
+        if(cart == null){
+
+            response.sendRedirect(
+                    request.getContextPath()+"/menu");
+
+            return;
+        }
 
         List<CartItemDetails> cartItems =
-                cartItemDAO.getCartItemsWithProductDetails(cart.getCartId());
+                cartItemDAO.getCartItemDetails(
+                        cart.getCartId());
 
-        request.setAttribute(
-                "cartItems",
-                cartItems);
+        double subtotal = 0;
+
+        for(CartItemDetails item : cartItems){
+
+            subtotal += item.getItemTotal();
+
+        }
+
+        request.setAttribute("cartItems", cartItems);
+        request.setAttribute("subtotal", subtotal);
 
         request.getRequestDispatcher(
-                "/jsp/customer/cart.jsp")
-                .forward(request,response);
+                "/pages/customer/cart.jsp")
+                .forward(request, response);
 
     }
 

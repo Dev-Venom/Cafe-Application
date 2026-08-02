@@ -15,7 +15,10 @@ import com.cafe.Model.User;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/cart/add")
 public class AddToCartServlet extends HttpServlet {
@@ -34,81 +37,90 @@ public class AddToCartServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request,
+    protected void doGet(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession(false);
-   
+    	HttpSession session = request.getSession(false);
 
-        if (session == null) {
-            System.out.println("Session is NULL");
-            response.sendRedirect(request.getContextPath() + "/login");
-            return;
-        }
+    	if (session == null || session.getAttribute("loggedInUser") == null) {
 
-        User user = (User) session.getAttribute("loggedInUser");
+    	    response.sendRedirect(
+    	            request.getContextPath() + "/login");
 
-        if (user == null) {
-            System.out.println("User is NULL");
-            response.sendRedirect(request.getContextPath() + "/login");
-            return;
-        }
+    	    return;
+    	}
 
-        System.out.println("Logged in user : " + user.getUserName());
+    	User user = (User) session.getAttribute("loggedInUser");
 
-        User user1 =
-                (User)session.getAttribute("loggedInUser");
+        int userId = user.getUserId();
 
         int productId =
-                Integer.parseInt(
-                        request.getParameter("productId"));
-
-        int quantity =
-                Integer.parseInt(
-                        request.getParameter("quantity"));
-
-        Cart cart =
-                cartDAO.getCartByUserId(
-                        user1.getUserId());
-        if(cart == null){
-
-            Cart newCart = new Cart();
-
-            newCart.setUserId(user1.getUserId());
-
-            cartDAO.addCart(newCart);
-
-            cart = cartDAO.getCartByUserId(user1.getUserId());
-
-        }
-        
+                Integer.parseInt(request.getParameter("productId"));
 
         Product product =
                 productDAO.getProduct(productId);
 
-        double total =
-                product.getPrice() * quantity;
+        if (product == null) {
 
-        CartItem item =
-                new CartItem();
+            response.sendRedirect(
+                    request.getContextPath() + "/menu");
 
-        item.setCartId(cart.getCartId());
-        item.setProductId(productId);
-        item.setQuantity(quantity);
-        item.setItemTotal(total);
+            return;
+        }
 
-        cartItemDAO.addCartItem(item);
+        Cart cart =
+                cartDAO.getCartByUserId(userId);
 
+     
+        if (cart == null) {
+
+            cart = new Cart();
+
+            cart.setUserId(userId);
+
+            cartDAO.addCart(cart);
+
+            cart = cartDAO.getCartByUserId(userId);
+        }
+
+        // Check whether the product already exists in the cart
+        CartItem cartItem =
+                cartItemDAO.getCartItemByCartAndProduct(
+                        cart.getCartId(),
+                        productId);
+
+        if (cartItem != null) {
+
+            int newQuantity =
+                    cartItem.getQuantity() + 1;
+
+            cartItem.setQuantity(newQuantity);
+
+            cartItem.setItemTotal(
+                    newQuantity * product.getPrice());
+
+            cartItemDAO.updateCartItem(cartItem);
+
+        } else {
+
+            CartItem newItem = new CartItem();
+
+            newItem.setCartId(cart.getCartId());
+
+            newItem.setProductId(productId);
+
+            newItem.setQuantity(1);
+
+            newItem.setItemTotal(product.getPrice());
+
+            cartItemDAO.addCartItem(newItem);
+
+        }
+
+        
         response.sendRedirect(
-                request.getContextPath()+"/cart");
-       
-        
-        
-        
-
+                request.getContextPath() + "/cart");
     }
-    
-    
 
 }

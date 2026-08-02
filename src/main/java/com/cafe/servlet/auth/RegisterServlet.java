@@ -33,7 +33,18 @@ public class RegisterServlet extends HttpServlet {
         String userName = request.getParameter("userName");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        String confirmPassword = request.getParameter("confirmPassword");
         String phone = request.getParameter("phone");
+        
+
+        if (!password.equals(confirmPassword)) {
+
+            response.sendRedirect(
+                request.getContextPath()
+                + "/pages/auth/register.jsp?passwordMismatch=1");
+
+            return;
+        }
 
         User user = new User();
 
@@ -56,12 +67,12 @@ public class RegisterServlet extends HttpServlet {
 			cartDAOImpl.addCart(cart);
 
         	response.sendRedirect(
-        			request.getContextPath()+"/jsp/auth/login.jsp?success=1");
+        			request.getContextPath()+"/pages/auth/login.jsp?success=1");
 
         } else {
 
             response.sendRedirect(
-                    request.getContextPath() + "/jsp/auth/register.jsp");
+                    request.getContextPath() + "/pages/auth/register.jsp");
         }
     }
     

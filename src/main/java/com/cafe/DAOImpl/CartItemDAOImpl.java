@@ -28,7 +28,8 @@ public class CartItemDAOImpl implements CartItemDAO {
 
 	private static final String CLEAR_CART_QUERY = "DELETE FROM cart_item WHERE cartId=?";
 
-	private static final String CHECK_PRODUCT_QUERY = "SELECT 1 FROM cart_item WHERE cartId=? AND productId=?";
+	private static final String GET_BY_CART_PRODUCT_QUERY =
+	        "SELECT * FROM cart_item WHERE cartId=? AND productId=?";
 	
 	private static final String GET_CART_ITEMS_WITH_PRODUCTS =
 			"SELECT ci.cartItemId, p.productId, p.productName, p.image, p.price, ci.quantity, ci.itemTotal "
@@ -202,46 +203,62 @@ public class CartItemDAOImpl implements CartItemDAO {
 		return false;
 	}
 
+	
+	
+	
+
+	
 	@Override
-	public boolean isProductInCart(int cartId, int productId) {
+	public CartItem getCartItemByCartAndProduct(int cartId, int productId) {
 
-		try (Connection con = DBConnection.getConnection();
-				PreparedStatement pstmt = con.prepareStatement(CHECK_PRODUCT_QUERY)) {
+	    CartItem cartItem = null;
 
-			pstmt.setInt(1, cartId);
-			pstmt.setInt(2, productId);
+	    try (Connection con = DBConnection.getConnection();
+	         PreparedStatement pstmt =
+	                 con.prepareStatement(GET_BY_CART_PRODUCT_QUERY)) {
 
-			ResultSet rs = pstmt.executeQuery();
+	        pstmt.setInt(1, cartId);
+	        pstmt.setInt(2, productId);
 
-			return rs.next();
+	        ResultSet rs = pstmt.executeQuery();
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	        if (rs.next()) {
 
-		return false;
+	            cartItem = new CartItem();
+
+	            cartItem.setCartItemId(rs.getInt("cartItemId"));
+	            cartItem.setCartId(rs.getInt("cartId"));
+	            cartItem.setProductId(rs.getInt("productId"));
+	            cartItem.setQuantity(rs.getInt("quantity"));
+	            cartItem.setItemTotal(rs.getDouble("itemTotal"));
+
+	        }
+
+	    } catch (Exception e) {
+
+	        e.printStackTrace();
+
+	    }
+
+	    return cartItem;
 	}
 	
 	@Override
-	public List<CartItemDetails> getCartItemsWithProductDetails(int cartId) {
+	public List<CartItemDetails> getCartItemDetails(int cartId) {
 
 	    List<CartItemDetails> list = new ArrayList<>();
 
-	    try {
-
-	        Connection con = DBConnection.getConnection();
-
-	        PreparedStatement pstmt =
-	                con.prepareStatement(GET_CART_ITEMS_WITH_PRODUCTS);
+	    try (Connection con = DBConnection.getConnection();
+	         PreparedStatement pstmt =
+	                 con.prepareStatement(GET_CART_ITEMS_WITH_PRODUCTS)) {
 
 	        pstmt.setInt(1, cartId);
 
 	        ResultSet rs = pstmt.executeQuery();
 
-	        while(rs.next()) {
+	        while (rs.next()) {
 
-	            CartItemDetails item =
-	                    new CartItemDetails();
+	            CartItemDetails item = new CartItemDetails();
 
 	            item.setCartItemId(rs.getInt("cartItemId"));
 	            item.setProductId(rs.getInt("productId"));
@@ -252,18 +269,17 @@ public class CartItemDAOImpl implements CartItemDAO {
 	            item.setItemTotal(rs.getDouble("itemTotal"));
 
 	            list.add(item);
-
 	        }
 
-	    }
-	    catch(Exception e) {
+	    } catch (Exception e) {
 
 	        e.printStackTrace();
 
 	    }
 
 	    return list;
-
 	}
+
+	
 	
 }

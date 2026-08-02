@@ -7,21 +7,22 @@ import com.cafe.Model.CartItemDetails;
 
 public interface CartItemDAO {
 
-	boolean addCartItem(CartItem cartItem);
+    boolean addCartItem(CartItem cartItem);
 
-	CartItem getCartItem(int cartItemId);
+    CartItem getCartItem(int cartItemId);
 
-	List<CartItem> getCartItemsByCartId(int cartId);
+    CartItem getCartItemByCartAndProduct(int cartId, int productId);
 
-	List<CartItem> getAllCartItems();
+    List<CartItem> getCartItemsByCartId(int cartId);
 
-	boolean updateCartItem(CartItem cartItem);
+    List<CartItem> getAllCartItems();
 
-	boolean deleteCartItem(int cartItemId);
+    List<CartItemDetails> getCartItemDetails(int cartId);
 
-	boolean clearCartItems(int cartId);
+    boolean updateCartItem(CartItem cartItem);
 
-	boolean isProductInCart(int cartId, int productId);
-	
-	List<CartItemDetails> getCartItemsWithProductDetails(int cartId);
+    boolean deleteCartItem(int cartItemId);
+
+    boolean clearCartItems(int cartId);
+
 }

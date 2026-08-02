@@ -16,6 +16,6 @@ public interface CategoryDAO {
 
 	boolean deleteCategory(int categoryId);
 
-	boolean isCartExists(int userId);
+	
 
 }

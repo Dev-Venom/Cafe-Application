@@ -1,20 +1,20 @@
 package com.cafe.DAO;
 
 import java.util.List;
-
 import com.cafe.Model.Orders;
 
 public interface OrdersDAO {
 
-	boolean addOrder(Orders order);
+    int addOrder(Orders order);
 
-	Orders getOrder(int orderId);
+    Orders getOrder(int orderId);
 
-	List<Orders> getOrdersByUserId(int userId);
+    List<Orders> getOrdersByUser(int userId);
 
-	List<Orders> getAllOrders();
+    List<Orders> getAllOrders();
 
-	boolean updateOrder(Orders order);
+    boolean updateOrder(Orders order);
 
-	boolean deleteOrder(int orderId);
+    boolean deleteOrder(int orderId);
+
 }
