@@ -38,6 +38,9 @@ public class CartItemDAOImpl implements CartItemDAO {
 			+ "ON ci.productId = p.productId "
 			+ "WHERE ci.cartId=?";
 	
+	private static final String GET_CART_COUNT_QUERY =
+	        "SELECT COALESCE(SUM(quantity),0) AS total FROM cart_item WHERE cartId=?";
+	
 	@Override
 	public boolean addCartItem(CartItem cartItem) {
 
@@ -278,6 +281,34 @@ public class CartItemDAOImpl implements CartItemDAO {
 	    }
 
 	    return list;
+	}
+	
+	@Override
+	public int getCartItemCount(int cartId) {
+
+	    int count = 0;
+
+	    try (Connection con = DBConnection.getConnection();
+	         PreparedStatement pstmt =
+	                 con.prepareStatement(GET_CART_COUNT_QUERY)) {
+
+	        pstmt.setInt(1, cartId);
+
+	        ResultSet rs = pstmt.executeQuery();
+
+	        if (rs.next()) {
+
+	            count = rs.getInt("total");
+
+	        }
+
+	    } catch (Exception e) {
+
+	        e.printStackTrace();
+
+	    }
+
+	    return count;
 	}
 
 	

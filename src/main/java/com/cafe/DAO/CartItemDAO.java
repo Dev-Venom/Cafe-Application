@@ -25,4 +25,6 @@ public interface CartItemDAO {
 
     boolean clearCartItems(int cartId);
 
+	int getCartItemCount(int cartId);
+
 }

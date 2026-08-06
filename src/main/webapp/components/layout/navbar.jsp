@@ -7,6 +7,17 @@
 User loggedInUser = (User) session.getAttribute("loggedInUser");
 %>
 
+<%
+Integer cartCount =
+(Integer)request.getAttribute("cartCount");
+
+if(cartCount == null){
+
+    cartCount = 0;
+
+}
+%>
+
 <nav class="navbar">
 
     <div class="container navbar-container">
@@ -53,6 +64,23 @@ User loggedInUser = (User) session.getAttribute("loggedInUser");
         
 
         <div class="nav-actions">
+        
+        <% if(loggedInUser != null){ %>
+
+    <a href="${pageContext.request.contextPath}/cart"
+       class="cart-btn">
+
+        🛒
+
+        <span class="cart-count">
+
+            <%=cartCount%>
+
+        </span>
+
+    </a>
+
+<% } %>
 
 <% if(loggedInUser == null){ %>
 
