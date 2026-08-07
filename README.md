@@ -153,3 +153,30 @@ JDBC
    |
    v
 MySQL Database
+
+
+##Database Design
+
+user
+ |
+ +---- address
+ |
+ +---- cart
+        |
+        +---- cart_item
+                |
+                +---- product
+                        |
+                        +---- category
+
+user
+ |
+ +---- orders
+          |
+          +---- order_item
+                    |
+                    +---- product
+
+user
+ |
+ +---- review
