@@ -155,3 +155,35 @@ JDBC
 MySQL Database
 
 
+```
+
+---
+
+## Database Design
+
+```text
+
+user
+ |
+ +---- address
+ |
+ +---- cart
+        |
+        +---- cart_item
+                |
+                +---- product
+                        |
+                        +---- category
+
+user
+ |
+ +---- orders
+          |
+          +---- order_item
+                    |
+                    +---- product
+
+user
+ |
+ +---- review
+
