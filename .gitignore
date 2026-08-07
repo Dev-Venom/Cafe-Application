@@ -1,13 +1,29 @@
+# Eclipse
 .project
 .classpath
 .settings/
+
+# Java build output
 build/
 bin/
 *.class
+
+# IDEs
 .vscode/
 .idea/
+
+# Eclipse / Tomcat
 Servers/
+
+# Operating system
 Thumbs.db
 .DS_Store
+
+# Logs
 *.log
+
+# Environment
 .env
+
+# Local database configuration
+src/main/java/com/cafe/utility/DBConnection.java
